@@ -20,6 +20,7 @@ public class GameControl extends JPanel{
 	private Avanti avanti;
 	private JButton moveEnemy, addEnemy;
 	JPanel towerButton;
+	boolean moveButtonClicked = false;
 
 	public GameControl(Avanti avanti) {
 		this.avanti = avanti;
@@ -41,7 +42,10 @@ public class GameControl extends JPanel{
 
 	class MoveEnemyListener implements ActionListener{
 		public void actionPerformed(ActionEvent event){
-			avanti.startEnemies();
+			if (!moveButtonClicked){
+				moveButtonClicked = true;
+				avanti.startEnemies();
+			}
 		}
 	}
 	

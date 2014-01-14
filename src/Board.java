@@ -37,10 +37,8 @@ public class Board extends JPanel {
 							tempIsRoom = false;
 						map[i][j] = new BoardCell(i, j, tempIsRoom, tempMap.get(i)[j]);
 						if (map[i][j].getDirection().contains("B")){
-							System.out.println();
 							startingPoint = new Point(map[i][j].getY(), map[i][j].getX());
 							map[i][j] = new BoardCell(i, j, tempIsRoom, tempMap.get(i)[j].substring(1));
-							System.out.println(map[i][j].getDirection());
 						}
 					}
 				}

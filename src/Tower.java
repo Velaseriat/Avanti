@@ -36,9 +36,8 @@ public class Tower {
 		towerCount += 1;
 	}
 
-	public boolean isInRange(Enemy e) {
-		System.out.println(e.getExactLocation().distance(new Point(location.x*50, location.y*50)));
-		if (e.getExactLocation().distance(new Point(location.x*50, location.y*50)) <= radius)
+	public boolean isInRange(Enemy e) { //this might not be measuring quite right
+		if (e.getExactLocation().distance(new Point(location.x*50 + 25, location.y*50 + 25)) <= radius)
 			return true;
 		return false;
 	}
@@ -48,6 +47,7 @@ public class Tower {
 		g.setColor(Color.WHITE);
 		g.fillRect(50 * location.x + 25/2, 50 * location.y + 25/2, 25, 25);
 		if (drawShot && e != null && numEnemiesInRange > 0){
+			g.setColor(Color.CYAN.brighter());
 			Point l = e.getExactLocation();
 			g.drawLine(50 * location.x + 25, 50 * location.y + 25, l.x + 25, l.y + 25);
 		}

@@ -14,6 +14,9 @@ public class Avanti extends JFrame{
 	Board b;
 	ArrayList<Tower> towers;
 	ArrayList<Enemy> enemies;
+	private int enemiesSpawned = 0;
+	private Timer spawnTimer;
+	public Timer waitTimer;
 
 	private static Point startingPoint;
 	private static int mode = 2; //2: if enemies arent dead, they come back around again with their current health
@@ -32,6 +35,7 @@ public class Avanti extends JFrame{
 		towers = new ArrayList<Tower>();
 		//correct this later on, just testing things out
 		towers.add(new Tower(0,0));
+		towers.add(new Tower(2,0));
 		towers.add(new Tower(4,4));
 		b.getTowersFromGame(towers);
 		b.repaint();
@@ -54,6 +58,7 @@ public class Avanti extends JFrame{
 	private class MoveTimerListener implements ActionListener {//this all happens at each tick
 		public void actionPerformed(ActionEvent event){
 			ArrayList<Enemy> t = new ArrayList<Enemy>();
+			System.out.println(enemies.size());
 			for (Enemy e : enemies){ //move each enemy
 				e.move();
 			}
@@ -62,12 +67,10 @@ public class Avanti extends JFrame{
 			for (Tower tower : towers){//each tower scans around itself for enemies to attack, and attacks the one that progressed the most
 				ArrayList<Enemy> listOfEnemies = new ArrayList<Enemy>();
 				for (Enemy e : enemies){
-					System.out.println(tower.getLocation() + " - " + e.getLocation());
 					if (tower.isInRange(e)){
 						listOfEnemies.add(e); //I'm sure the error is around here.
 					}
 				}
-				System.out.println(tower.getLocation() + " - " + listOfEnemies);
 				tower.attack(listOfEnemies);
 			}
 			
@@ -101,15 +104,31 @@ public class Avanti extends JFrame{
 	private class SpawnTimerListener implements ActionListener {//will be used later
 		public void actionPerformed(ActionEvent event){
 			enemies.add(new Enemy(startingPoint, b)); 
-			System.out.println("Starting Point:" + startingPoint);
+			enemiesSpawned+=1;
+			System.out.println(enemiesSpawned + " has spawned");
+			if (enemiesSpawned  == 20){
+				System.out.println("STOP!!!!");
+				enemiesSpawned = 0;
+				spawnTimer.stop();
+				waitTimer = new Timer(5000, new WaitTimerListener());
+				waitTimer.start();
+			}
+		}
+	}
+	
+	private class WaitTimerListener implements ActionListener{
+		public void actionPerformed(ActionEvent event){
+				waitTimer.stop();
+				spawnTimer.start();	
 		}
 	}
 		
 	public void startEnemies() {//should really be named "ticker" but this gives the computer 50 ms to do everything
 		Timer moveTimer = new Timer(50, new MoveTimerListener()); // CHANGE SPEED HERE
 		moveTimer.start();
-		//Timer spawnTimer = new Timer(500, new SpawnTimerListener());
-		//spawnTimer.start();
+		spawnTimer = new Timer(500, new SpawnTimerListener());
+		spawnTimer.start();
+		
 	}
 
 	public void boardClick(int x, int y) { // for placing towers later on
