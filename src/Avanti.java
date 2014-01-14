@@ -57,8 +57,7 @@ public class Avanti extends JFrame{
 	
 	class boardClickListener implements MouseListener{//not being used yet. will be for placing towers
 		public void mouseClicked(MouseEvent e) {
-			if (placingTowers)
-				boardClick(e.getX(), e.getY());
+			boardClick(e.getX(), e.getY());
 		}
 		public void mouseEntered(MouseEvent e) {
 			
@@ -70,18 +69,27 @@ public class Avanti extends JFrame{
 	
 	public void boardClick(int x, int y) { // for placing towers later on
 		Point p = new Point(x/50, y/50);
-		boolean canPlaceTower = true;
-		if (b.getCellDirection(p).equals("W")){
+		if (placingTowers){
+			boolean canPlaceTower = true;
+			if (b.getCellDirection(p).equals("W")){
+				for (Tower t : towers){
+					if (t.getLocation().equals(p))
+						canPlaceTower = false;
+				}
+				if (canPlaceTower){
+					towers.add(new Tower(p.x, p.y));
+					b.repaint();
+				}
+			}
+			placingTowers = false;
+		}
+		else{
 			for (Tower t : towers){
 				if (t.getLocation().equals(p))
-					canPlaceTower = false;
-			}
-			if (canPlaceTower){
-				towers.add(new Tower(p.x, p.y));
-				b.repaint();
+					new TowerOptionsPanel();
+					
 			}
 		}
-		placingTowers = false;
 	}
 	
 	private class MoveTimerListener implements ActionListener {//this all happens at each tick
