@@ -6,11 +6,11 @@ import java.util.ArrayList;
 
 
 public class Tower {
-	int radius = 100;
-	Point location;
+	private int radius = 100;
+	private Point location;
 	private int numEnemiesInRange = 0;
-	Enemy e;
-	boolean drawShot = false;
+	private Enemy e;
+	private boolean drawShot = false;
 	private int towerCount = 0;
 	private boolean counting = false;
 	
@@ -29,7 +29,7 @@ public class Tower {
 					if (e.getProgress() < enemies.get(i).getProgress())
 						e = enemies.get(i);
 				}
-				e.setHealth(e.getHealth()-80);
+				e.setHealth(e.getHealth()-15);
 			}
 			else{
 				towerCount = 0;
@@ -67,6 +67,12 @@ public class Tower {
 	
 	public Point getLocation(){
 		return location;
+	}
+	
+	public boolean equals(Tower other){
+		if (location.equals(other.getLocation()))
+			return true;
+		return false;
 	}
 	
 	

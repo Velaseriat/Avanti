@@ -11,34 +11,44 @@ import javax.swing.Timer;
 
 
 public class Avanti extends JFrame{
-	Board b;
-	ArrayList<Tower> towers;
-	ArrayList<Enemy> enemies;
+	//In-game objects
+	private Board b;
+	
+	//Containers
+	private ArrayList<Tower> towers;
+	private ArrayList<Enemy> enemies;
+	
+	//Variables
 	private int enemiesSpawned = 0;
-	private Timer spawnTimer;
-	public Timer waitTimer;
-
 	private static Point startingPoint;
 	private static int mode = 2; //2: if enemies arent dead, they come back around again with their current health
+	public boolean placingTowers = false;
+	
+	//Timers
+	private Timer spawnTimer;
+	private Timer waitTimer;
+
+	private int enemyStartingHealth = 50;
+	
+	
 	public Avanti(){
 		b = new Board("map.csv");
 		add(b);
 		add(new GameControl(this),BorderLayout.SOUTH);
-		setVisible(true);
-		setSize(300,500);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		b.addMouseListener(new boardClickListener());
-		pack();
+		
 		//testing purposes
 		enemies = new ArrayList<Enemy>();
 		startingPoint = b.getStartingPoint();
 		towers = new ArrayList<Tower>();
 		//correct this later on, just testing things out
-		towers.add(new Tower(0,0));
-		towers.add(new Tower(2,0));
-		towers.add(new Tower(4,4));
 		b.getTowersFromGame(towers);
 		b.repaint();
+		setVisible(true);
+		setSize(300,500);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		pack();
 	}
 	
 	public static void main(String[] args){
@@ -47,18 +57,36 @@ public class Avanti extends JFrame{
 	
 	class boardClickListener implements MouseListener{//not being used yet. will be for placing towers
 		public void mouseClicked(MouseEvent e) {
-			boardClick(e.getX(), e.getY());
+			if (placingTowers)
+				boardClick(e.getX(), e.getY());
 		}
-		public void mouseEntered(MouseEvent e) {}
+		public void mouseEntered(MouseEvent e) {
+			
+		}
 		public void mouseExited(MouseEvent e) {}
 		public void mousePressed(MouseEvent e) {}
 		public void mouseReleased(MouseEvent e) {}
 	}
 	
+	public void boardClick(int x, int y) { // for placing towers later on
+		Point p = new Point(x/50, y/50);
+		boolean canPlaceTower = true;
+		if (b.getCellDirection(p).equals("W")){
+			for (Tower t : towers){
+				if (t.getLocation().equals(p))
+					canPlaceTower = false;
+			}
+			if (canPlaceTower){
+				towers.add(new Tower(p.x, p.y));
+				b.repaint();
+			}
+		}
+		placingTowers = false;
+	}
+	
 	private class MoveTimerListener implements ActionListener {//this all happens at each tick
 		public void actionPerformed(ActionEvent event){
 			ArrayList<Enemy> t = new ArrayList<Enemy>();
-			System.out.println(enemies.size());
 			for (Enemy e : enemies){ //move each enemy
 				e.move();
 			}
@@ -103,11 +131,9 @@ public class Avanti extends JFrame{
 	
 	private class SpawnTimerListener implements ActionListener {//will be used later
 		public void actionPerformed(ActionEvent event){
-			enemies.add(new Enemy(startingPoint, b)); 
+			enemies.add(new Enemy(startingPoint, b, enemyStartingHealth)); 
 			enemiesSpawned+=1;
-			System.out.println(enemiesSpawned + " has spawned");
 			if (enemiesSpawned  == 20){
-				System.out.println("STOP!!!!");
 				enemiesSpawned = 0;
 				spawnTimer.stop();
 				waitTimer = new Timer(5000, new WaitTimerListener());
@@ -119,6 +145,8 @@ public class Avanti extends JFrame{
 	private class WaitTimerListener implements ActionListener{
 		public void actionPerformed(ActionEvent event){
 				waitTimer.stop();
+				increaseEnemyHealth(50);
+				System.out.println(enemyStartingHealth);
 				spawnTimer.start();	
 		}
 	}
@@ -131,9 +159,8 @@ public class Avanti extends JFrame{
 		
 	}
 
-	public void boardClick(int x, int y) { // for placing towers later on
-		// TODO Auto-generated method stub
-		
+	public void increaseEnemyHealth(int i) {
+		enemyStartingHealth +=i;
 	}
 
 	public void addEnemy() {

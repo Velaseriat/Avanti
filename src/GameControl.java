@@ -18,28 +18,35 @@ import javax.swing.JPanel;
 
 public class GameControl extends JPanel{
 	private Avanti avanti;
-	private JButton moveEnemy, addEnemy;
-	JPanel towerButton;
+	private JButton moveEnemyButton, addEnemyButton, placeTowerButton;
+	private JPanel towerPanel;
 	boolean moveButtonClicked = false;
 
 	public GameControl(Avanti avanti) {
 		this.avanti = avanti;
-		setLayout(new GridLayout(0,2));
+		setLayout(new GridLayout(0,3));
 		setPreferredSize(new Dimension(15, 30));
-		moveEnemy = new JButton("Move Enemy");
-		moveEnemy.addActionListener(new MoveEnemyListener());
-		add(moveEnemy);
-		addEnemy = new JButton("Add Enemy");
-		addEnemy.addActionListener(new AddEnemyListener());
-		add(addEnemy);
-		
-		
+		moveEnemyButton = new JButton("Move Enemy");
+		moveEnemyButton.addActionListener(new MoveEnemyListener());
+		add(moveEnemyButton);
+		addEnemyButton = new JButton("Add Enemy");
+		addEnemyButton.addActionListener(new AddEnemyListener());
+		add(addEnemyButton);
+		towerPanel = new JPanel();
+		placeTowerButton = new JButton("Tower");
+		placeTowerButton.addActionListener(new AddTowerListener());
+		add(placeTowerButton);
 
 		    //Register a listener for the radio buttons.
 
 	}
 
-
+	class AddTowerListener implements ActionListener{
+		public void actionPerformed(ActionEvent arg0) {
+			avanti.placingTowers = true;
+		}
+	}
+	
 	class MoveEnemyListener implements ActionListener{
 		public void actionPerformed(ActionEvent event){
 			if (!moveButtonClicked){
