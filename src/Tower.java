@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 
 public class Tower {
-	int radius = 150;
+	int radius = 100;
 	Point location;
 	private int numEnemiesInRange = 0;
 	Enemy e;
@@ -37,7 +37,8 @@ public class Tower {
 	}
 
 	public boolean isInRange(Enemy e) {
-		if (e.getExactLocation().distance(location) <= radius)
+		System.out.println(e.getExactLocation().distance(new Point(location.x*50, location.y*50)));
+		if (e.getExactLocation().distance(new Point(location.x*50, location.y*50)) <= radius)
 			return true;
 		return false;
 	}
@@ -51,6 +52,10 @@ public class Tower {
 			g.drawLine(50 * location.x + 25, 50 * location.y + 25, l.x + 25, l.y + 25);
 		}
 		
+	}
+	
+	public Point getLocation(){
+		return location;
 	}
 	
 	

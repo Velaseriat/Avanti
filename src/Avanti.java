@@ -62,10 +62,12 @@ public class Avanti extends JFrame{
 			for (Tower tower : towers){//each tower scans around itself for enemies to attack, and attacks the one that progressed the most
 				ArrayList<Enemy> listOfEnemies = new ArrayList<Enemy>();
 				for (Enemy e : enemies){
+					System.out.println(tower.getLocation() + " - " + e.getLocation());
 					if (tower.isInRange(e)){
 						listOfEnemies.add(e); //I'm sure the error is around here.
 					}
 				}
+				System.out.println(tower.getLocation() + " - " + listOfEnemies);
 				tower.attack(listOfEnemies);
 			}
 			
@@ -104,7 +106,7 @@ public class Avanti extends JFrame{
 	}
 		
 	public void startEnemies() {//should really be named "ticker" but this gives the computer 50 ms to do everything
-		Timer moveTimer = new Timer(50, new MoveTimerListener());
+		Timer moveTimer = new Timer(50, new MoveTimerListener()); // CHANGE SPEED HERE
 		moveTimer.start();
 		//Timer spawnTimer = new Timer(500, new SpawnTimerListener());
 		//spawnTimer.start();
