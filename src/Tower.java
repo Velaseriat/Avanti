@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 
 public class Tower {
-	int radius = 300;
+	int radius = 150;
 	Point location;
 	private int numEnemiesInRange = 0;
 	Enemy e;

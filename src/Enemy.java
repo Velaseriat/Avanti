@@ -5,7 +5,6 @@ import java.util.Random;
 
 
 public class Enemy {
-	private String dir = "";
 	char choice;
 	private Point location;
 	private int xMove = 0;

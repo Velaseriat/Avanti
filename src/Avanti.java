@@ -33,13 +33,15 @@ public class Avanti extends JFrame{
 		//correct this later on, just testing things out
 		towers.add(new Tower(0,0));
 		towers.add(new Tower(4,4));
+		b.getTowersFromGame(towers);
+		b.repaint();
 	}
 	
 	public static void main(String[] args){
 		Avanti avt = new Avanti();
 	}
 	
-	class boardClickListener implements MouseListener{
+	class boardClickListener implements MouseListener{//not being used yet. will be for placing towers
 		public void mouseClicked(MouseEvent e) {
 			boardClick(e.getX(), e.getY());
 		}
@@ -48,25 +50,26 @@ public class Avanti extends JFrame{
 		public void mousePressed(MouseEvent e) {}
 		public void mouseReleased(MouseEvent e) {}
 	}
-	private class MoveTimerListener implements ActionListener {
+	
+	private class MoveTimerListener implements ActionListener {//this all happens at each tick
 		public void actionPerformed(ActionEvent event){
 			ArrayList<Enemy> t = new ArrayList<Enemy>();
-			for (Enemy e : enemies){
+			for (Enemy e : enemies){ //move each enemy
 				e.move();
 			}
 			//towers attacking
 			if (towers.size() > 0)
-			for (Tower tower : towers){
+			for (Tower tower : towers){//each tower scans around itself for enemies to attack, and attacks the one that progressed the most
 				ArrayList<Enemy> listOfEnemies = new ArrayList<Enemy>();
 				for (Enemy e : enemies){
 					if (tower.isInRange(e)){
-						listOfEnemies.add(e);
+						listOfEnemies.add(e); //I'm sure the error is around here.
 					}
 				}
 				tower.attack(listOfEnemies);
 			}
 			
-			if (mode == 1){
+			if (mode == 1){ //they disappear at 'E'
 			while(!enemies.isEmpty()){
 				Enemy e = enemies.remove(0);
 				if (!e.atEndingPoint() && e.getHealth()>0)
@@ -74,7 +77,7 @@ public class Avanti extends JFrame{
 			}
 			enemies = t;
 			}
-			else if (mode == 2){
+			else if (mode == 2){//they respawn to the beginning at 'E' with their current health
 				while(!enemies.isEmpty()){
 					Enemy e = enemies.remove(0);
 					if (e.getHealth()>0)
@@ -87,27 +90,27 @@ public class Avanti extends JFrame{
 				enemies = t;
 			}
 			
-			b.getEnemiesFromGame(enemies);
+			b.getEnemiesFromGame(enemies); //for painting stuff
 			b.getTowersFromGame(towers);
 			b.repaint();
 		}
 	}
 	
-	private class SpawnTimerListener implements ActionListener {
+	private class SpawnTimerListener implements ActionListener {//will be used later
 		public void actionPerformed(ActionEvent event){
-			enemies.add(new Enemy(startingPoint, b));
+			enemies.add(new Enemy(startingPoint, b)); 
 			System.out.println("Starting Point:" + startingPoint);
 		}
 	}
 		
-	public void startEnemies() {
+	public void startEnemies() {//should really be named "ticker" but this gives the computer 50 ms to do everything
 		Timer moveTimer = new Timer(50, new MoveTimerListener());
 		moveTimer.start();
 		//Timer spawnTimer = new Timer(500, new SpawnTimerListener());
 		//spawnTimer.start();
 	}
 
-	public void boardClick(int x, int y) {
+	public void boardClick(int x, int y) { // for placing towers later on
 		// TODO Auto-generated method stub
 		
 	}
