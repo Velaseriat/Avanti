@@ -86,7 +86,7 @@ public class Enemy {
 		return location;
 	}
 	public Point getExactLocation(){
-		return new Point(50 * location.x + xMove*5, 50 * location.y + yMove*5);
+		return new Point(50 * location.x + xMove*5 + 25, 50 * location.y + yMove*5 + 25);
 	}
 	public boolean atEndingPoint() {
 		return isAtEnd;
