@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.Random;
 
 
-public class Enemy {
+public class Enemy implements HuntAndKillable {
 	char choice;
 	private Point location;
 	private int xMove = 0;
@@ -18,7 +18,7 @@ public class Enemy {
 	public Enemy(Point p, Board board){
 		location = p;
 		b = board;
-		health = 1000;
+		health = 100;
 	}
 	public Enemy(Point p, Board board,int health){
 		location = p;
@@ -101,5 +101,10 @@ public class Enemy {
 	}
 	public int getProgress() {
 		return progress;
+	}
+	@Override
+	public void setLocation(Point p) {
+		// TODO Auto-generated method stub
+		
 	}
 }

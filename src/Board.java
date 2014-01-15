@@ -16,7 +16,8 @@ public class Board extends JPanel {
 	BoardCell[][] map;
 	private static Point startingPoint, endingPoint;
 	ArrayList<BoardCell> boardCells = new ArrayList<BoardCell>();
-	private ArrayList<Tower> towers = new ArrayList<Tower>();;
+	private ArrayList<Tower> towers = new ArrayList<Tower>();
+	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 	
 	
 	public Board(String fName){
@@ -64,6 +65,9 @@ public class Board extends JPanel {
 		for (Tower t : towers){
 			t.draw(g);
 		}
+		for (Bullet b : bullets ){
+			b.draw(g);
+		}
 	}
 	
 	public void getEnemiesFromGame(ArrayList<Enemy> e){
@@ -80,6 +84,11 @@ public class Board extends JPanel {
 
 	public String getCellDirection(Point location) {
 		return map[location.y][location.x].getDirection();
+	}
+
+
+	public void getBulletsFromGame(ArrayList<Bullet> b) {
+		bullets = b;
 	}
 	
 	

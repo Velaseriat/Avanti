@@ -6,16 +6,24 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 
-public class Tower {
-	private int radius = 100;
-	private Point location;
-	private int numEnemiesInRange = 0;
-	private Enemy e;
-	private boolean drawShot = false;
-	private int towerCount = 0;
-	private boolean counting = false;
-	private Mode towerMode = Mode.FARTHEST; //furthest is false
+public class Tower implements HuntAndKillable {
 	public enum Mode {WEAKEST, FARTHEST, STRONGEST};
+	
+	//Variables
+	private int radius = 100;
+	private int health = 1000;
+	private int damage = 40;
+	
+	//Counting
+	private int numEnemiesInRange = 0;
+	private int towerCount = 0;
+	private boolean drawShot = false;
+	private boolean counting = false;
+	
+	//Objects
+	private Point location;
+	private Enemy e;
+	private Mode towerMode = Mode.FARTHEST; //furthest is false
 	
 	public Tower(int x, int y){
 		location = new Point(x, y);
@@ -45,7 +53,7 @@ public class Tower {
 							e = enemies.get(i);
 					}
 				}
-				e.setHealth(e.getHealth()-15);
+				e.setHealth(e.getHealth()-damage);
 			}
 			else{
 				towerCount = 0;
@@ -103,6 +111,24 @@ public class Tower {
 
 	public Mode getMode() {
 		return towerMode;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+	
+	public void setHealth(int i){
+		health = i;
+	}
+	
+	public Point getExactLocation(){
+		return new Point(50 * location.x + 25, 50 * location.y + 25);
+	}
+
+	@Override
+	public void setLocation(Point p) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
