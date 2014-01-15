@@ -1,5 +1,7 @@
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -13,7 +15,6 @@ import javax.swing.Timer;
 public class Avanti extends JFrame{
 	//In-game objects
 	private Board b;
-	
 	//Containers
 	private ArrayList<Tower> towers;
 	private ArrayList<Enemy> enemies;
@@ -23,12 +24,13 @@ public class Avanti extends JFrame{
 	private static Point startingPoint;
 	private static int mode = 2; //2: if enemies arent dead, they come back around again with their current health
 	public boolean placingTowers = false;
+	public boolean towerOptionPanelOpen = false;
 	
 	//Timers
 	private Timer spawnTimer;
 	private Timer waitTimer;
 
-	private int enemyStartingHealth = 50;
+	private int enemyStartingHealth = 300;
 	
 	
 	public Avanti(){
@@ -53,6 +55,13 @@ public class Avanti extends JFrame{
 	
 	public static void main(String[] args){
 		Avanti avt = new Avanti();
+		Dimension sd = Toolkit.getDefaultToolkit().getScreenSize(); 
+		Dimension fd = avt.getSize(); 
+		if (fd.height > sd.height) 
+			fd.height = sd.height; 
+		if (fd.width > sd.width) 
+			fd.width = sd.width; 
+		avt.setLocation((sd.width - fd.width) / 2, (sd.height - fd.height) / 2); 
 	}
 	
 	class boardClickListener implements MouseListener{//not being used yet. will be for placing towers
@@ -85,13 +94,16 @@ public class Avanti extends JFrame{
 		}
 		else{
 			for (Tower t : towers){
-				if (t.getLocation().equals(p))
-					new TowerOptionsPanel();
+				if (t.getLocation().equals(p)){
+					if (!towerOptionPanelOpen){
+						new TowerOptionsPanel(t, b);
+					}
+				}
 					
 			}
 		}
 	}
-	
+
 	private class MoveTimerListener implements ActionListener {//this all happens at each tick
 		public void actionPerformed(ActionEvent event){
 			ArrayList<Enemy> t = new ArrayList<Enemy>();
@@ -102,6 +114,7 @@ public class Avanti extends JFrame{
 			if (towers.size() > 0)
 			for (Tower tower : towers){//each tower scans around itself for enemies to attack, and attacks the one that progressed the most
 				ArrayList<Enemy> listOfEnemies = new ArrayList<Enemy>();
+				System.out.println(tower.getLocation() + "-" + tower.getMode());
 				for (Enemy e : enemies){
 					if (tower.isInRange(e)){
 						listOfEnemies.add(e); //I'm sure the error is around here.
@@ -109,6 +122,7 @@ public class Avanti extends JFrame{
 				}
 				tower.attack(listOfEnemies);
 			}
+			System.out.println("");
 			
 			if (mode == 1){ //they disappear at 'E'
 			while(!enemies.isEmpty()){
@@ -154,15 +168,14 @@ public class Avanti extends JFrame{
 		public void actionPerformed(ActionEvent event){
 				waitTimer.stop();
 				increaseEnemyHealth(50);
-				System.out.println(enemyStartingHealth);
 				spawnTimer.start();	
 		}
 	}
 		
 	public void startEnemies() {//should really be named "ticker" but this gives the computer 50 ms to do everything
-		Timer moveTimer = new Timer(50, new MoveTimerListener()); // CHANGE SPEED HERE
+		Timer moveTimer = new Timer(100, new MoveTimerListener()); // CHANGE SPEED HERE
 		moveTimer.start();
-		spawnTimer = new Timer(500, new SpawnTimerListener());
+		spawnTimer = new Timer(1000, new SpawnTimerListener());
 		spawnTimer.start();
 		
 	}

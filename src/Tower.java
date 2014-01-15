@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.geom.Point2D;
@@ -13,9 +14,13 @@ public class Tower {
 	private boolean drawShot = false;
 	private int towerCount = 0;
 	private boolean counting = false;
+	private boolean towerMode = false; //furthest is false
 	
 	public Tower(int x, int y){
 		location = new Point(x, y);
+		towerMode = false;
+		//false means strongest
+		//true means furthest
 	}
 	
 	public void attack(ArrayList<Enemy> enemies){
@@ -26,8 +31,14 @@ public class Tower {
 				drawShot = true;
 				e = enemies.get(0);
 				for (int i = 0; i < enemies.size(); i++){
-					if (e.getProgress() < enemies.get(i).getProgress())
-						e = enemies.get(i);
+					if (!towerMode){
+						if (e.getProgress() < enemies.get(i).getProgress())
+							e = enemies.get(i);
+						}
+					else{
+						if (e.getHealth() < enemies.get(i).getHealth())
+							e = enemies.get(i);
+					}
 				}
 				e.setHealth(e.getHealth()-15);
 			}
@@ -43,6 +54,9 @@ public class Tower {
 			towerCount += 1;
 	}
 
+	public void setMode(boolean mode){
+		towerMode = mode;
+	}
 	public boolean isInRange(Enemy e) { //this might not be measuring quite right
 		if (e.getExactLocation().distance(new Point(location.x*50 + 25, location.y*50 + 25)) <= radius)
 			return true;
@@ -62,6 +76,11 @@ public class Tower {
 			Point l = e.getExactLocation();
 			g.drawLine(50 * location.x + 25, 50 * location.y + 25, l.x, l.y);
 		}
+		if (!towerMode)
+			g.setColor(Color.RED);
+		else
+			g.setColor(Color.GREEN);
+		g.fillRect(50 * location.x + 1, 50 * location.y + 1, 5, 5);
 		drawShot = !drawShot;
 	}
 	
@@ -73,6 +92,12 @@ public class Tower {
 		if (location.equals(other.getLocation()))
 			return true;
 		return false;
+	}
+
+	public boolean getMode() {
+		//returns true if furthest
+		//returns false if strongest
+		return towerMode;
 	}
 	
 	

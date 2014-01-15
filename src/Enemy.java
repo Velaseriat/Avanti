@@ -80,6 +80,8 @@ public class Enemy {
 	public void draw(Graphics g) {
 		g.setColor(Color.RED.brighter());
 		g.fillOval(50 * location.x + xMove*5+25/2, 50 * location.y + yMove*5 + 25/2, 25, 25);
+		g.setColor(Color.GREEN);
+		g.drawString(new Integer(health).toString(), 50 * location.x + xMove*5+25/2, 50 * location.y + yMove*5 + 25/2);
 	}
 
 	public Point getLocation() {
