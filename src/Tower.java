@@ -14,11 +14,12 @@ public class Tower {
 	private boolean drawShot = false;
 	private int towerCount = 0;
 	private boolean counting = false;
-	private boolean towerMode = false; //furthest is false
+	private Mode towerMode = Mode.FARTHEST; //furthest is false
+	public enum Mode {WEAKEST, FARTHEST, STRONGEST};
 	
 	public Tower(int x, int y){
 		location = new Point(x, y);
-		towerMode = false;
+		towerMode = Mode.FARTHEST;
 		//false means strongest
 		//true means furthest
 	}
@@ -31,12 +32,16 @@ public class Tower {
 				drawShot = true;
 				e = enemies.get(0);
 				for (int i = 0; i < enemies.size(); i++){
-					if (!towerMode){
+					if (towerMode == Mode.FARTHEST){
 						if (e.getProgress() < enemies.get(i).getProgress())
 							e = enemies.get(i);
 						}
-					else{
+					else if (towerMode == Mode.STRONGEST){
 						if (e.getHealth() < enemies.get(i).getHealth())
+							e = enemies.get(i);
+					}
+					else{
+						if (e.getHealth() > enemies.get(i).getHealth())
 							e = enemies.get(i);
 					}
 				}
@@ -54,7 +59,7 @@ public class Tower {
 			towerCount += 1;
 	}
 
-	public void setMode(boolean mode){
+	public void setMode(Mode mode){
 		towerMode = mode;
 	}
 	public boolean isInRange(Enemy e) { //this might not be measuring quite right
@@ -76,11 +81,13 @@ public class Tower {
 			Point l = e.getExactLocation();
 			g.drawLine(50 * location.x + 25, 50 * location.y + 25, l.x, l.y);
 		}
-		if (!towerMode)
-			g.setColor(Color.RED);
-		else
+		if (towerMode == Mode.FARTHEST)
+			g.setColor(Color.YELLOW);
+		else if (towerMode == Mode.WEAKEST)
 			g.setColor(Color.GREEN);
-		g.fillRect(50 * location.x + 1, 50 * location.y + 1, 5, 5);
+		else
+			g.setColor(Color.RED);
+		g.fillRect(50 * location.x + 1, 50 * location.y + 1, 7, 7);
 		drawShot = !drawShot;
 	}
 	
@@ -94,9 +101,7 @@ public class Tower {
 		return false;
 	}
 
-	public boolean getMode() {
-		//returns true if furthest
-		//returns false if strongest
+	public Mode getMode() {
 		return towerMode;
 	}
 	

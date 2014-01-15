@@ -10,36 +10,50 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 
 public class TowerOptionsPanel extends JDialog {
-	private JButton closeButton;
-	private JRadioButton bFurthest, bStrongest;
+	private JButton closeButton, removeButton;
+	private JRadioButton bFarthest, bStrongest, bWeakest;
 	private Tower tower;
-	private Board b;
+	private Avanti avt;
 	
-	public TowerOptionsPanel(Tower tower, Board b){
+	public TowerOptionsPanel(Tower tower, Avanti avt){
 		this.tower = tower;
-		this.b = b;
-		bFurthest = new JRadioButton("Furthest");
+		this.avt = avt;
+		
+		bFarthest = new JRadioButton("Furthest");
 		bStrongest = new JRadioButton("Strongest");
+		bWeakest = new JRadioButton("Weakest");
 		MakeChangesListener mcl = new MakeChangesListener();
-		bFurthest.addActionListener(mcl);
+		bFarthest.addActionListener(mcl);
 		bStrongest.addActionListener(mcl);
+		bWeakest.addActionListener(mcl);
 		ButtonGroup bg = new ButtonGroup();
-		bg.add(bFurthest);
+		bg.add(bFarthest);
+		bg.add(bWeakest);
 		bg.add(bStrongest);
-		Box box = new Box(BoxLayout.X_AXIS);
-		box.add(bFurthest);
+		Box box = new Box(BoxLayout.Y_AXIS);
+		box.add(bFarthest);
+		box.add(bWeakest);
 		box.add(bStrongest);
 		add(box);
+		Box box2 = new Box(BoxLayout.X_AXIS);
+        
+        
 		closeButton = new JButton("Close");
 		closeButton.addActionListener(new CloseWindowListener());
-		add(closeButton, BorderLayout.SOUTH);
-		
-		if (!tower.getMode())
-			bFurthest.setSelected(true);
+		removeButton = new JButton("Remove");
+		removeButton.addActionListener(new RemoveTowerListener());
+		box2.add(removeButton);
+        box2.add(closeButton);
+        add(box2, BorderLayout.SOUTH);
+		if (tower.getMode() == Tower.Mode.FARTHEST)
+			bFarthest.setSelected(true);
+		else if (tower.getMode() == Tower.Mode.WEAKEST)
+			bWeakest.setSelected(true);
 		else
 			bStrongest.setSelected(true);
 			
@@ -54,8 +68,17 @@ public class TowerOptionsPanel extends JDialog {
 		
 		setSize(400, 200);
 		setVisible(true);
+		
 	}
 	
+	class RemoveTowerListener implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+			avt.removeFromTowers(tower);
+			avt.getBoard().repaint();
+			setVisible(false);
+			dispose();
+		}
+	}
 	class CloseWindowListener implements ActionListener{
 		public void actionPerformed(ActionEvent e){
 			setVisible(false);
@@ -65,13 +88,13 @@ public class TowerOptionsPanel extends JDialog {
 	class MakeChangesListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (bFurthest.isSelected())
-				tower.setMode(false);
+			if (bFarthest.isSelected())
+				tower.setMode(Tower.Mode.FARTHEST);
+			else if (bWeakest.isSelected())
+				tower.setMode(Tower.Mode.WEAKEST);
 			else
-				tower.setMode(true);
-			b.repaint();
-			System.out.println(tower.getLocation() + " - " + tower.getMode());
-			
+				tower.setMode(Tower.Mode.STRONGEST);
+			avt.getBoard().repaint();
 		}
 		
 	}

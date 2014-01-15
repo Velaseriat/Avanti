@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -96,7 +97,7 @@ public class Avanti extends JFrame{
 			for (Tower t : towers){
 				if (t.getLocation().equals(p)){
 					if (!towerOptionPanelOpen){
-						new TowerOptionsPanel(t, b);
+						new TowerOptionsPanel(t, this);
 					}
 				}
 					
@@ -114,7 +115,6 @@ public class Avanti extends JFrame{
 			if (towers.size() > 0)
 			for (Tower tower : towers){//each tower scans around itself for enemies to attack, and attacks the one that progressed the most
 				ArrayList<Enemy> listOfEnemies = new ArrayList<Enemy>();
-				System.out.println(tower.getLocation() + "-" + tower.getMode());
 				for (Enemy e : enemies){
 					if (tower.isInRange(e)){
 						listOfEnemies.add(e); //I'm sure the error is around here.
@@ -122,7 +122,6 @@ public class Avanti extends JFrame{
 				}
 				tower.attack(listOfEnemies);
 			}
-			System.out.println("");
 			
 			if (mode == 1){ //they disappear at 'E'
 			while(!enemies.isEmpty()){
@@ -197,6 +196,15 @@ public class Avanti extends JFrame{
 		}
 		
 		b.repaint();
+	}
+
+	public void removeFromTowers(Tower tower) {
+		//a bunch of tower recycling related code here so that the player can get some money back
+		towers.remove(tower);
+	}
+
+	public Component getBoard() {
+		return b;
 	}
 	
 }

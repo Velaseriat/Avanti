@@ -58,12 +58,11 @@ public class Board extends JPanel {
 				map[i][j].draw(g);
 			}
 		}
-		
-		for (Tower t : towers){
-			t.draw(g);
-		}
 		for (Enemy e : enemies){
 			e.draw(g);
+		}
+		for (Tower t : towers){
+			t.draw(g);
 		}
 	}
 	
