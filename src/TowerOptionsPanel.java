@@ -59,6 +59,7 @@ public class TowerOptionsPanel extends JDialog {
 	class CloseWindowListener implements ActionListener{
 		public void actionPerformed(ActionEvent e){
 			setVisible(false);
+			dispose();
 		}
 	}
 	class MakeChangesListener implements ActionListener{
