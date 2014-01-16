@@ -63,19 +63,6 @@ public class Enemy implements HuntAndKillable {
 			chosenDirection = false;
 		}
 	}
-/*	public void move(){
-		//figure out how to make this draw smoothly! Maybe fix the time issue?
-		choice = b.getCellDirection(location).toCharArray()[new Random().nextInt(b.getCellDirection(location).length())];
-			if (choice == 'U')
-				location = new Point(location.x, location.y-1);
-			if (choice == 'D')
-				location = new Point(location.x, location.y+1);
-			if (choice == 'L')
-				location = new Point(location.x-1, location.y);
-			if (choice == 'R')
-				location = new Point(location.x+1, location.y);
-
-	}*/
 	
 	public void draw(Graphics g) {
 		g.setColor(Color.RED.brighter());

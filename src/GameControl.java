@@ -1,18 +1,13 @@
 
 
 
-import java.awt.BorderLayout;
-import java.awt.Color;
+
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JRadioButton;
-
 import javax.swing.JPanel;
 
 
@@ -43,6 +38,7 @@ public class GameControl extends JPanel{
 
 	class AddTowerListener implements ActionListener{
 		public void actionPerformed(ActionEvent arg0) {
+			new TowerTypeDialog(avanti);
 			avanti.placingTowers = true;
 		}
 	}

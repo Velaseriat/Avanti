@@ -28,11 +28,14 @@ public class Avanti extends JFrame{
 	private static int mode = 2; //2: if enemies arent dead, they come back around again with their current health
 	public boolean placingTowers = false;
 	public boolean towerOptionPanelOpen = false;
-	private int enemyStartingHealth = 30000;
+	public boolean madeTowerSelection = false;
+	private int enemyStartingHealth = 300;
+	private TowerType tt = TowerType.ATTIA;
 	
 	//Timers
 	private Timer spawnTimer;
 	private Timer waitTimer;
+	
 	
 
 	
@@ -76,27 +79,41 @@ public class Avanti extends JFrame{
 		public void mouseClicked(MouseEvent e) {
 			boardClick(e.getX(), e.getY());
 		}
-		public void mouseEntered(MouseEvent e) {
-			
-		}
+		public void mouseEntered(MouseEvent e) {}
 		public void mouseExited(MouseEvent e) {}
 		public void mousePressed(MouseEvent e) {}
 		public void mouseReleased(MouseEvent e) {}
 	}
 	
-	
-	
 	public void boardClick(int x, int y) { // for placing towers later on
 		Point p = new Point(x/50, y/50);
 		if (placingTowers){
+			System.out.println("Create TowerTypeDialog...");
 			boolean canPlaceTower = true;
 			if (b.getCellDirection(p).equals("W")){
+				System.out.println("Found a wall to place tower...");
 				for (Tower t : towers){
-					if (t.getLocation().equals(p))
+					if (t.getLocation().equals(p)){
+						System.out.println(t.getLocation() + " = " + p + " is " + t.getLocation().equals(p));
 						canPlaceTower = false;
+					}
 				}
-				if (canPlaceTower){
-					towers.add(new Tower(p.x, p.y));
+				if (canPlaceTower)
+					System.out.println("Can Place a tower!");
+				if (canPlaceTower && madeTowerSelection){
+					System.out.println("Can place tower and I made a tower selection");
+					switch (tt){
+					case ATTIA: towers.add(new AttiaTower(p.x, p.y));
+					case TANYA:
+					case IRIS:
+					case XINA:
+					case KLAIR:
+					case ELNI:
+					case VIVIENNE:
+					case VELASARIAT:
+						default: towers.add(new AttiaTower(p.x, p.y));
+					}
+					
 					b.repaint();
 				}
 			}
@@ -106,6 +123,7 @@ public class Avanti extends JFrame{
 			for (Tower t : towers){
 				if (t.getLocation().equals(p)){
 					if (!towerOptionPanelOpen){
+						towerOptionPanelOpen = true;
 						new TowerOptionsPanel(t, this);
 					}
 				}
@@ -231,8 +249,8 @@ public class Avanti extends JFrame{
 	public void startEnemies() {//should really be named "ticker" but this gives the computer 50 ms to do everything
 		Timer moveTimer = new Timer(50, new MoveTimerListener()); // CHANGE SPEED HERE
 		moveTimer.start();
-		//spawnTimer = new Timer(500, new SpawnTimerListener());
-		//spawnTimer.start();
+		spawnTimer = new Timer(500, new SpawnTimerListener());
+		spawnTimer.start();
 		
 	}
 
@@ -252,7 +270,6 @@ public class Avanti extends JFrame{
 		for (Enemy e : enemies){
 			e.move();	
 		}
-		
 		b.repaint();
 	}
 
@@ -263,6 +280,14 @@ public class Avanti extends JFrame{
 
 	public Component getBoard() {
 		return b;
+	}
+
+	public void setTowerType(TowerType tt) {
+		this.tt = tt;
+	}
+
+	public TowerType getTowerType() {
+		return tt;
 	}
 	
 }
