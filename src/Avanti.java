@@ -25,7 +25,7 @@ public class Avanti extends JFrame{
 	//Variables
 	private int enemiesSpawned = 0;
 	private static Point startingPoint;
-	private static int mode = 2; //2: if enemies arent dead, they come back around again with their current health
+	private static int mode = 1; //2: if enemies arent dead, they come back around again with their current health
 	public boolean placingTowers = false;
 	public boolean towerOptionPanelOpen = false;
 	private int enemyStartingHealth = 3000000;
@@ -122,7 +122,6 @@ public class Avanti extends JFrame{
 				e.move();
 			}
 			for (Bullet b : bullets){
-				b.getSpeed();
 				b.move();
 			}
 			while(!bullets.isEmpty()){
@@ -131,6 +130,8 @@ public class Avanti extends JFrame{
 					bulletList.add(b);
 			}
 			bullets = bulletList;
+			
+			
 			
 			
 			//towers attacking

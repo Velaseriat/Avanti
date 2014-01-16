@@ -21,37 +21,16 @@ public class Bullet {
 		this.caliber = caliber;
 	}
 	
-	public void move(){
-		if (isAtTarget){
-			target.setHealth(target.getHealth()-damage);
-			if (position.distance(target.getLocation()) <= speed*2){
-				isAtTarget = true;
-			}
-		}
-		else{
-			/*int xx = 0;
-			int yy = 0;
-			if (position.x < target.getExactLocation().x)
-				xx = 1;
-			if (position.x > target.getExactLocation().x)
-				xx = -1;
-			if (position.y < target.getExactLocation().y)
-				yy = 1;
-			if (position.y > target.getExactLocation().y)
-				yy = -1;
-			
-			position = new Point(position.x + xx*speed, position.y + yy*speed);*/
-			
+	public void move(){	
+		if (position.distance(target.getExactLocation())>=speed && !isAtTarget){
 			int xx = target.getExactLocation().x - position.x;
 			int yy = target.getExactLocation().y - position.y;
-			int radius = (int)Math.sqrt(xx^2 + yy^2);
-			//position is now (0, 0) and coordinate (xx, yy) is away from origin of distance radius
-			double angle = Math.atan2(xx, yy);
-			System.out.println(Math.toDegrees(angle));
-			position = new Point((int)(position.x + speed*Math.cos(Math.toDegrees(angle))), (int)(position.y + speed*Math.sin(180 + Math.toDegrees(angle))));
-			
-			
-			
+			double angle = Math.atan2(yy, xx);
+			System.out.println(position.distance(target.getExactLocation()));
+			position = new Point((int)(position.x + speed*Math.cos(angle)), (int)(position.y + speed*Math.sin(angle)));
+		}
+		else{
+			isAtTarget = true;
 		}
 	}
 	
