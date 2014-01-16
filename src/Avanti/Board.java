@@ -1,3 +1,5 @@
+package Avanti;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -8,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.JPanel;
+
+import Tower.Tower;
 
 
 public class Board extends JPanel {

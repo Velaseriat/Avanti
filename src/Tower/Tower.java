@@ -1,6 +1,12 @@
+package Tower;
+
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
+
+import Avanti.Enemy;
+import Avanti.HuntAndKillable;
+import Enumeration.Mode;
 
 
 public abstract class Tower implements HuntAndKillable {

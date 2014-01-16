@@ -1,7 +1,12 @@
+package Tower;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
+
+import Avanti.Enemy;
+import Enumeration.Mode;
 
 
 public class AttiaTower extends Tower{

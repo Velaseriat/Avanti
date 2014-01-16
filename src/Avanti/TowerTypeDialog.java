@@ -1,3 +1,4 @@
+package Avanti;
 import javax.swing.JDialog;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -11,16 +12,16 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 
+import Enumeration.TowerType;
+
 public class TowerTypeDialog extends JDialog{
 
 	private JButton addButton, cancelButton;
 	private JRadioButton rAttia, rTanya, rIris, rXina, rKlair, rElni, rVivienne, rVelasariat;
 	private ButtonGroup rowenKnights;
-	private Tower tower;
 	private Avanti avt;
 	
 	public TowerTypeDialog(Avanti avt){
-		this.tower = tower;
 		this.avt = avt;
 		setDefaultCloseOperation( DO_NOTHING_ON_CLOSE );
 		

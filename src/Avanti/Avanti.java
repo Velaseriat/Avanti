@@ -1,3 +1,5 @@
+package Avanti;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -12,6 +14,10 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.Timer;
+
+import Enumeration.TowerType;
+import Tower.AttiaTower;
+import Tower.Tower;
 
 
 public class Avanti extends JFrame{
@@ -87,31 +93,25 @@ public class Avanti extends JFrame{
 	
 	public void boardClick(int x, int y) { // for placing towers later on
 		Point p = new Point(x/50, y/50);
-		if (placingTowers){
-			System.out.println("Create TowerTypeDialog...");
+		if (placingTowers && madeTowerSelection){
 			boolean canPlaceTower = true;
 			if (b.getCellDirection(p).equals("W")){
-				System.out.println("Found a wall to place tower...");
 				for (Tower t : towers){
 					if (t.getLocation().equals(p)){
-						System.out.println(t.getLocation() + " = " + p + " is " + t.getLocation().equals(p));
 						canPlaceTower = false;
 					}
 				}
-				if (canPlaceTower)
-					System.out.println("Can Place a tower!");
-				if (canPlaceTower && madeTowerSelection){
-					System.out.println("Can place tower and I made a tower selection");
+				if (canPlaceTower){
 					switch (tt){
-					case ATTIA: towers.add(new AttiaTower(p.x, p.y));
-					case TANYA:
-					case IRIS:
-					case XINA:
-					case KLAIR:
-					case ELNI:
-					case VIVIENNE:
-					case VELASARIAT:
-						default: towers.add(new AttiaTower(p.x, p.y));
+					case ATTIA: {towers.add(new AttiaTower(p.x, p.y)); break;}
+					case TANYA: //{towers.add(new TanyaTower(p.x, p.y)); break;}
+					case IRIS: //{towers.add(new IrisTower(p.x, p.y)); break;}
+					case XINA: //{towers.add(new XinaTower(p.x, p.y)); break;}
+					case KLAIR: //{towers.add(new KlairTower(p.x, p.y)); break;}
+					case ELNI: //{towers.add(new ElniTower(p.x, p.y)); break;}
+					case VIVIENNE: //{towers.add(new VivienneTower(p.x, p.y)); break;}
+					case VELASARIAT: //{towers.add(new VelasariatTower(p.x, p.y)); break;}
+						default: //towers.add(new AttiaTower(p.x, p.y));
 					}
 					
 					b.repaint();
@@ -125,6 +125,7 @@ public class Avanti extends JFrame{
 					if (!towerOptionPanelOpen){
 						towerOptionPanelOpen = true;
 						new TowerOptionsPanel(t, this);
+						System.out.println("Opened Tower Options Panel...");
 					}
 				}
 			}

@@ -1,3 +1,4 @@
+package Avanti;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -10,6 +11,9 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JRadioButton;
+
+import Enumeration.Mode;
+import Tower.Tower;
 
 
 public class TowerOptionsPanel extends JDialog {
@@ -95,6 +99,7 @@ public class TowerOptionsPanel extends JDialog {
 			else
 				tower.setMode(Mode.STRONGEST);
 			avt.getBoard().repaint();
+			System.out.println("Did I repaint?");
 		}
 		
 	}
