@@ -28,7 +28,7 @@ public class Avanti extends JFrame{
 	private static int mode = 2; //2: if enemies arent dead, they come back around again with their current health
 	public boolean placingTowers = false;
 	public boolean towerOptionPanelOpen = false;
-	private int enemyStartingHealth = 300;
+	private int enemyStartingHealth = 30000;
 	
 	//Timers
 	private Timer spawnTimer;
@@ -157,8 +157,8 @@ public class Avanti extends JFrame{
 				}
 				tower.attack(listOfEnemies);
 			}
-			ArrayList<Tower> towerTargetList = new ArrayList<Tower>();
 			for (Enemy e : enemies){
+				ArrayList<Tower> towerTargetList = new ArrayList<Tower>();
 				if (e instanceof EnemyGunner){
 					if (((EnemyGunner) e).isAttacking()){
 						for (Tower t : towers){

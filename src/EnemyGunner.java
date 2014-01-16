@@ -4,7 +4,7 @@ import java.util.Random;
 
 
 public class EnemyGunner extends Enemy {
-	int radius = 60;
+	int radius = 120;
 	private boolean isAttacking = false;
 
 	public EnemyGunner(Point p, Board board) {
@@ -36,7 +36,8 @@ public class EnemyGunner extends Enemy {
 	}
 	
 	public boolean isInRange(Tower t) { 
-		if (getExactLocation().distance(new Point(t.getLocation().x*50 + 25, t.getLocation().y*50 + 25)) <= radius)
+		System.out.println(getExactLocation().distance(new Point(t.getExactLocation().x, t.getExactLocation().y)));
+		if (getExactLocation().distance(new Point(t.getExactLocation().x, t.getExactLocation().y)) <= radius)
 			return true;
 		return false;
 	}

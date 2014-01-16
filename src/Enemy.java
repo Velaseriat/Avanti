@@ -18,7 +18,7 @@ public class Enemy implements HuntAndKillable {
 	public Enemy(Point p, Board board){
 		location = p;
 		b = board;
-		health = 100;
+		health = 300;
 	}
 	public Enemy(Point p, Board board,int health){
 		location = p;

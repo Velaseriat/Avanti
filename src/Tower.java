@@ -11,7 +11,7 @@ public class Tower implements HuntAndKillable {
 	
 	//Variables
 	private int radius = 100;
-	private int health = 1000;
+	private int health = 10000000;
 	private int damage = 40;
 	
 	//Counting
