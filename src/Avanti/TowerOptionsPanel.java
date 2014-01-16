@@ -1,6 +1,6 @@
+package Avanti;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,8 +10,10 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+
+import Enumeration.Mode;
+import Tower.Tower;
 
 
 public class TowerOptionsPanel extends JDialog {
@@ -23,7 +25,7 @@ public class TowerOptionsPanel extends JDialog {
 	public TowerOptionsPanel(Tower tower, Avanti avt){
 		this.tower = tower;
 		this.avt = avt;
-		
+		setDefaultCloseOperation( DO_NOTHING_ON_CLOSE );
 		bFarthest = new JRadioButton("Furthest");
 		bStrongest = new JRadioButton("Strongest");
 		bWeakest = new JRadioButton("Weakest");
@@ -50,9 +52,9 @@ public class TowerOptionsPanel extends JDialog {
 		box2.add(removeButton);
         box2.add(closeButton);
         add(box2, BorderLayout.SOUTH);
-		if (tower.getMode() == Tower.Mode.FARTHEST)
+		if (tower.getMode() == Mode.FARTHEST)
 			bFarthest.setSelected(true);
-		else if (tower.getMode() == Tower.Mode.WEAKEST)
+		else if (tower.getMode() ==  Mode.WEAKEST)
 			bWeakest.setSelected(true);
 		else
 			bStrongest.setSelected(true);
@@ -76,25 +78,28 @@ public class TowerOptionsPanel extends JDialog {
 			avt.removeFromTowers(tower);
 			avt.getBoard().repaint();
 			setVisible(false);
+			avt.towerOptionPanelOpen = false;
 			dispose();
 		}
 	}
 	class CloseWindowListener implements ActionListener{
 		public void actionPerformed(ActionEvent e){
 			setVisible(false);
+			avt.towerOptionPanelOpen = false;
 			dispose();
 		}
 	}
+	
 	class MakeChangesListener implements ActionListener{
-		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (bFarthest.isSelected())
-				tower.setMode(Tower.Mode.FARTHEST);
+				tower.setMode(Mode.FARTHEST);
 			else if (bWeakest.isSelected())
-				tower.setMode(Tower.Mode.WEAKEST);
+				tower.setMode(Mode.WEAKEST);
 			else
-				tower.setMode(Tower.Mode.STRONGEST);
+				tower.setMode(Mode.STRONGEST);
 			avt.getBoard().repaint();
+			System.out.println("Did I repaint?");
 		}
 		
 	}

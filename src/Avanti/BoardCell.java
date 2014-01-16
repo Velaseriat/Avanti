@@ -1,6 +1,8 @@
+package Avanti;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.Box;
 
@@ -22,8 +24,10 @@ public class BoardCell{
 			color = Color.CYAN;
 			color = color.darker().darker();
 		}
-		else
-			color = Color.black;
+		else{
+			int col = new Random().nextInt(55);
+			color = new Color(col, col, col);
+		}
 	}
 
 	public void draw(Graphics g) {

@@ -1,6 +1,10 @@
+package Avanti;
+
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
+
+import Tower.Tower;
 
 
 public class EnemyGunner extends Enemy {
@@ -36,7 +40,6 @@ public class EnemyGunner extends Enemy {
 	}
 	
 	public boolean isInRange(Tower t) { 
-		System.out.println(getExactLocation().distance(new Point(t.getExactLocation().x, t.getExactLocation().y)));
 		if (getExactLocation().distance(new Point(t.getExactLocation().x, t.getExactLocation().y)) <= radius)
 			return true;
 		return false;

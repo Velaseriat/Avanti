@@ -1,3 +1,5 @@
+package Avanti;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -8,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.JPanel;
+
+import Tower.Tower;
 
 
 public class Board extends JPanel {
@@ -77,6 +81,10 @@ public class Board extends JPanel {
 	public void getTowersFromGame(ArrayList<Tower> t){
 		towers = t;
 	}
+	
+	public void getBulletsFromGame(ArrayList<Bullet> b) {
+		bullets = b;
+	}
 
 	public Point getStartingPoint() {
 		return startingPoint;
@@ -85,11 +93,7 @@ public class Board extends JPanel {
 	public String getCellDirection(Point location) {
 		return map[location.y][location.x].getDirection();
 	}
-
-
-	public void getBulletsFromGame(ArrayList<Bullet> b) {
-		bullets = b;
-	}
+	
 	
 	
 }
