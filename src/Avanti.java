@@ -167,7 +167,7 @@ public class Avanti extends JFrame{
 						}
 						Tower target = ((EnemyGunner) e).attack(towerTargetList);
 						if (target != null){
-							Bullet bullet = new Bullet(3,10,target,e.getExactLocation(),Color.RED.darker(),10);
+							Bullet bullet = new Bullet(13,10,target,e.getExactLocation(),Color.RED.darker(),10);
 							bullets.add(bullet);
 						}
 					}
