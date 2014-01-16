@@ -4,7 +4,7 @@ import java.util.Random;
 
 
 public class EnemyGunner extends Enemy {
-	int radius = 120;
+	int radius = 60;
 	private boolean isAttacking = false;
 
 	public EnemyGunner(Point p, Board board) {
