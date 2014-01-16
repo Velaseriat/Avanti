@@ -26,11 +26,11 @@ public class Bullet {
 			int xx = target.getExactLocation().x - position.x;
 			int yy = target.getExactLocation().y - position.y;
 			double angle = Math.atan2(yy, xx);
-			System.out.println(position.distance(target.getExactLocation()));
 			position = new Point((int)(position.x + speed*Math.cos(angle)), (int)(position.y + speed*Math.sin(angle)));
 		}
 		else{
 			isAtTarget = true;
+			target.setHealth(target.getHealth() - damage);
 		}
 	}
 	

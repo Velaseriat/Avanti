@@ -25,10 +25,10 @@ public class Avanti extends JFrame{
 	//Variables
 	private int enemiesSpawned = 0;
 	private static Point startingPoint;
-	private static int mode = 1; //2: if enemies arent dead, they come back around again with their current health
+	private static int mode = 2; //2: if enemies arent dead, they come back around again with their current health
 	public boolean placingTowers = false;
 	public boolean towerOptionPanelOpen = false;
-	private int enemyStartingHealth = 3000000;
+	private int enemyStartingHealth = 300;
 	
 	//Timers
 	private Timer spawnTimer;
@@ -118,6 +118,8 @@ public class Avanti extends JFrame{
 		public void actionPerformed(ActionEvent event){
 			ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
 			ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
+			ArrayList<Tower> towerList = new ArrayList<Tower>();
+			
 			for (Enemy e : enemies){ //move each enemy
 				e.move();
 			}
@@ -131,6 +133,16 @@ public class Avanti extends JFrame{
 			}
 			bullets = bulletList;
 			
+			while(!towers.isEmpty()){
+				Tower t = towers.remove(0);
+				if (t.getHealth()>0){
+					towerList.add(t);
+				}
+				else{
+					System.out.println("Tower " + t.toString() + " has been destroyed!");
+				}
+			}
+			towers = towerList;
 			
 			
 			
@@ -145,15 +157,15 @@ public class Avanti extends JFrame{
 				}
 				tower.attack(listOfEnemies);
 			}
-			ArrayList<Tower> towerList = new ArrayList<Tower>();
+			ArrayList<Tower> towerTargetList = new ArrayList<Tower>();
 			for (Enemy e : enemies){
 				if (e instanceof EnemyGunner){
 					if (((EnemyGunner) e).isAttacking()){
 						for (Tower t : towers){
 							if(((EnemyGunner) e).isInRange(t))
-								towerList.add(t);
+								towerTargetList.add(t);
 						}
-						Tower target = ((EnemyGunner) e).attack(towerList);
+						Tower target = ((EnemyGunner) e).attack(towerTargetList);
 						if (target != null){
 							Bullet bullet = new Bullet(3,10,target,e.getExactLocation(),Color.RED.darker(),10);
 							bullets.add(bullet);

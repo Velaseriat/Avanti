@@ -84,6 +84,8 @@ public class Tower implements HuntAndKillable {
 		g.drawRect(50 * location.x, 50 * location.y, 50, 50);
 		g.drawLine(50 * location.x, 50 * location.y+50, 50*location.x+50,50 * location.y);
 		g.drawOval( 50 * location.x, 50 * location.y, 50,50);
+		g.setColor(Color.GREEN);
+		g.drawString(new Integer(health).toString(), 50 * location.x , 50 * location.y );
 		if (drawShot && e != null && numEnemiesInRange > 0){
 			g.setColor(Color.CYAN.brighter());
 			Point l = e.getExactLocation();
