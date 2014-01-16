@@ -28,7 +28,7 @@ public class Avanti extends JFrame{
 	private static int mode = 2; //2: if enemies arent dead, they come back around again with their current health
 	public boolean placingTowers = false;
 	public boolean towerOptionPanelOpen = false;
-	private int enemyStartingHealth = 300;
+	private int enemyStartingHealth = 3000000;
 	
 	//Timers
 	private Timer spawnTimer;
@@ -122,6 +122,7 @@ public class Avanti extends JFrame{
 				e.move();
 			}
 			for (Bullet b : bullets){
+				b.getSpeed();
 				b.move();
 			}
 			while(!bullets.isEmpty()){
@@ -176,6 +177,8 @@ public class Avanti extends JFrame{
 					if (!e.atEndingPoint())
 						enemyList.add(e);
 					//be able to obtain health from current enemy
+					else if (e instanceof EnemyGunner)
+						enemyList.add(new EnemyGunner(startingPoint, b, e.getHealth()));
 					else
 						enemyList.add(new Enemy(startingPoint, b, e.getHealth()));
 				}
@@ -215,8 +218,8 @@ public class Avanti extends JFrame{
 	public void startEnemies() {//should really be named "ticker" but this gives the computer 50 ms to do everything
 		Timer moveTimer = new Timer(50, new MoveTimerListener()); // CHANGE SPEED HERE
 		moveTimer.start();
-		spawnTimer = new Timer(500, new SpawnTimerListener());
-		spawnTimer.start();
+		//spawnTimer = new Timer(500, new SpawnTimerListener());
+		//spawnTimer.start();
 		
 	}
 
@@ -225,7 +228,8 @@ public class Avanti extends JFrame{
 	}
 
 	public void addEnemy() {
-		enemies.add(new Enemy(startingPoint, b));
+		//enemies.add(new Enemy(startingPoint, b));
+		enemies.add(new EnemyGunner(startingPoint, b, enemyStartingHealth)); 
 		b.getEnemiesFromGame(enemies);
 		b.repaint();
 	}

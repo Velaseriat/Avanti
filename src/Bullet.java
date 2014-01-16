@@ -22,32 +22,42 @@ public class Bullet {
 	}
 	
 	public void move(){
-		if (position.equals(target.getLocation())){
+		if (isAtTarget){
 			target.setHealth(target.getHealth()-damage);
-			if (position.distance(target.getLocation()) <= speed){
+			if (position.distance(target.getLocation()) <= speed*2){
 				isAtTarget = true;
 			}
 		}
 		else{
-			int xx = 0;
+			/*int xx = 0;
 			int yy = 0;
 			if (position.x < target.getExactLocation().x)
 				xx = 1;
-			else if (position.x > target.getExactLocation().x)
+			if (position.x > target.getExactLocation().x)
 				xx = -1;
-			else if (position.y < target.getExactLocation().y)
+			if (position.y < target.getExactLocation().y)
 				yy = 1;
-			else if (position.y < target.getExactLocation().y)
+			if (position.y > target.getExactLocation().y)
 				yy = -1;
 			
-			position = new Point(position.x + xx*speed, position.y + yy*speed);
+			position = new Point(position.x + xx*speed, position.y + yy*speed);*/
+			
+			int xx = target.getExactLocation().x - position.x;
+			int yy = target.getExactLocation().y - position.y;
+			int radius = (int)Math.sqrt(xx^2 + yy^2);
+			//position is now (0, 0) and coordinate (xx, yy) is away from origin of distance radius
+			double angle = Math.atan2(xx, yy);
+			System.out.println(Math.toDegrees(angle));
+			position = new Point((int)(position.x + speed*Math.cos(Math.toDegrees(angle))), (int)(position.y + speed*Math.sin(180 + Math.toDegrees(angle))));
+			
+			
 			
 		}
 	}
 	
 	public void draw(Graphics g){
 		g.setColor(color);
-		g.drawOval(position.x, position.y, caliber, caliber);
+		g.drawOval(position.x - caliber/2, position.y - caliber/2, caliber, caliber);
 	}
 	
 	public int getSpeed(){
@@ -56,6 +66,10 @@ public class Bullet {
 	
 	public boolean isAtTarget(){
 		return isAtTarget;
+	}
+
+	public Point getExactLocation() {
+		return new Point(50 * position.x + caliber/2 , 50 * position.y + caliber/2);
 	}
 
 

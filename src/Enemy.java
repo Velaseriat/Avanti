@@ -102,9 +102,7 @@ public class Enemy implements HuntAndKillable {
 	public int getProgress() {
 		return progress;
 	}
-	@Override
 	public void setLocation(Point p) {
-		// TODO Auto-generated method stub
-		
+		location = p;
 	}
 }

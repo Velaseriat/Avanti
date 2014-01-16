@@ -4,7 +4,7 @@ import java.util.Random;
 
 
 public class EnemyGunner extends Enemy {
-	int radius = 60;
+	int radius = 120;
 	private boolean isAttacking = false;
 
 	public EnemyGunner(Point p, Board board) {
@@ -26,7 +26,7 @@ public class EnemyGunner extends Enemy {
 	
 	public void move(){
 		super.move();
-		if (getProgress() %10 == 0){
+		if (new Random().nextInt(12) %10 == 0){
 			isAttacking  = true;
 		}
 	}
