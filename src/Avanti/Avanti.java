@@ -17,7 +17,14 @@ import javax.swing.Timer;
 
 import Enumeration.TowerType;
 import Tower.AttiaTower;
+import Tower.ElniTower;
+import Tower.IrisTower;
+import Tower.KlairTower;
+import Tower.TanyaTower;
 import Tower.Tower;
+import Tower.VelasariatTower;
+import Tower.VivienneTower;
+import Tower.XinaTower;
 
 
 public class Avanti extends JFrame{
@@ -34,7 +41,6 @@ public class Avanti extends JFrame{
 	private static int mode = 2; //2: if enemies arent dead, they come back around again with their current health
 	public boolean placingTowers = false;
 	public boolean towerOptionPanelOpen = false;
-	public boolean madeTowerSelection = false;
 	private int enemyStartingHealth = 300;
 	private TowerType tt = TowerType.ATTIA;
 	
@@ -93,7 +99,7 @@ public class Avanti extends JFrame{
 	
 	public void boardClick(int x, int y) { // for placing towers later on
 		Point p = new Point(x/50, y/50);
-		if (placingTowers && madeTowerSelection){
+		if (placingTowers){
 			boolean canPlaceTower = true;
 			if (b.getCellDirection(p).equals("W")){
 				for (Tower t : towers){
@@ -102,18 +108,21 @@ public class Avanti extends JFrame{
 					}
 				}
 				if (canPlaceTower){
+					/*boolean hasTowerType = false;
+					for (Tower t : towers){
+						System.out.println(t.getClass());
+					}*/
 					switch (tt){
 					case ATTIA: {towers.add(new AttiaTower(p.x, p.y)); break;}
-					case TANYA: //{towers.add(new TanyaTower(p.x, p.y)); break;}
-					case IRIS: //{towers.add(new IrisTower(p.x, p.y)); break;}
-					case XINA: //{towers.add(new XinaTower(p.x, p.y)); break;}
-					case KLAIR: //{towers.add(new KlairTower(p.x, p.y)); break;}
-					case ELNI: //{towers.add(new ElniTower(p.x, p.y)); break;}
-					case VIVIENNE: //{towers.add(new VivienneTower(p.x, p.y)); break;}
-					case VELASARIAT: //{towers.add(new VelasariatTower(p.x, p.y)); break;}
-						default: //towers.add(new AttiaTower(p.x, p.y));
+					case TANYA: {towers.add(new TanyaTower(p.x, p.y)); break;}
+					case IRIS: {towers.add(new IrisTower(p.x, p.y)); break;}
+					case XINA: {towers.add(new XinaTower(p.x, p.y)); break;}
+					case KLAIR: {towers.add(new KlairTower(p.x, p.y)); break;}
+					case ELNI: {towers.add(new ElniTower(p.x, p.y)); break;}
+					case VIVIENNE: {towers.add(new VivienneTower(p.x, p.y)); break;}
+					case VELASARIAT: {towers.add(new VelasariatTower(p.x, p.y)); break;}
+						default: System.out.println("#TooMuchSwag2Care");
 					}
-					
 					b.repaint();
 				}
 			}

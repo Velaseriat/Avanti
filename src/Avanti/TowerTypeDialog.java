@@ -10,6 +10,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 
 import Enumeration.TowerType;
@@ -75,7 +76,10 @@ public class TowerTypeDialog extends JDialog{
 		addButton.addActionListener(new AddTowerListener());
 		box2.add(addButton);
         box2.add(cancelButton);
+        Box box3 = new Box(BoxLayout.Y_AXIS);
+        box3.add(new JLabel("After clicking 'Add Tower' click on the board to place it."));
         add(box2, BorderLayout.SOUTH);
+        add(box3, BorderLayout.NORTH);
 			
 		
 		Dimension sd = Toolkit.getDefaultToolkit().getScreenSize(); 
@@ -94,7 +98,7 @@ public class TowerTypeDialog extends JDialog{
 	class AddTowerListener implements ActionListener{
 		public void actionPerformed(ActionEvent e){
 			setVisible(false);
-			avt.madeTowerSelection = true;
+			avt.placingTowers = true;
 			dispose();
 		}
 	}
@@ -124,8 +128,6 @@ public class TowerTypeDialog extends JDialog{
 				avt.setTowerType(TowerType.VIVIENNE);
 			else if (rVelasariat.isSelected())
 				avt.setTowerType(TowerType.VELASARIAT);
-			avt.madeTowerSelection = true;
-			System.out.println("Selected " + avt.getTowerType() + " in TowerTypeDialog.java");
 		}
 		
 		

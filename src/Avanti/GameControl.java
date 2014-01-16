@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 public class GameControl extends JPanel{
 	private Avanti avanti;
 	private JButton moveEnemyButton, addEnemyButton, placeTowerButton;
-	private JPanel towerPanel;
 	boolean moveButtonClicked = false;
 
 	public GameControl(Avanti avanti) {
@@ -30,19 +29,15 @@ public class GameControl extends JPanel{
 		addEnemyButton = new JButton("Add Enemy");
 		addEnemyButton.addActionListener(new AddEnemyListener());
 		add(addEnemyButton);
-		towerPanel = new JPanel();
+		new JPanel();
 		placeTowerButton = new JButton("Tower");
 		placeTowerButton.addActionListener(new AddTowerListener());
 		add(placeTowerButton);
-
-		    //Register a listener for the radio buttons.
-
 	}
 
 	class AddTowerListener implements ActionListener{
 		public void actionPerformed(ActionEvent arg0) {
 			new TowerTypeDialog(avanti);
-			avanti.placingTowers = true;
 		}
 	}
 	
