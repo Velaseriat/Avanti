@@ -11,10 +11,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
+import Enumeration.TowerCost;
 import Enumeration.TowerType;
 import Tower.AttiaTower;
 import Tower.ElniTower;
@@ -43,16 +45,13 @@ public class Avanti extends JFrame{
 	public boolean towerOptionPanelOpen = false;
 	private int enemyStartingHealth = 300;
 	private TowerType tt = TowerType.ATTIA;
+	private int money;
+	private int wave;
 
 	//Timers
 	private Timer spawnTimer;
 	private Timer waitTimer;
 	public boolean towerTypeDialogOpen = false;
-
-
-
-
-
 
 	public Avanti(){
 		b = new Board("map.csv");
@@ -60,16 +59,15 @@ public class Avanti extends JFrame{
 		add(new GameControl(this),BorderLayout.SOUTH);
 
 		b.addMouseListener(new BoardClickListener());
-
-		//testing purposes
 		enemies = new ArrayList<Enemy>();
 		startingPoint = b.getStartingPoint();
 		towers = new ArrayList<Tower>();
 		bullets = new ArrayList<Bullet>();
-		//correct this later on, just testing things out
 		b.getTowersFromGame(towers);
 		b.getBulletsFromGame(bullets);
 		b.repaint();
+		money = 20000;
+		wave = 1;
 		setVisible(true);
 		setSize(300,500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -114,14 +112,22 @@ public class Avanti extends JFrame{
 						System.out.println(t.getClass());
 					}*/
 					switch (tt){
-					case ATTIA: {towers.add(new AttiaTower(p.x, p.y)); break;}
-					case TANYA: {towers.add(new TanyaTower(p.x, p.y)); break;}
-					case IRIS: {towers.add(new IrisTower(p.x, p.y)); break;}
-					case XINA: {towers.add(new XinaTower(p.x, p.y)); break;}
-					case KLAIR: {towers.add(new KlairTower(p.x, p.y)); break;}
-					case ELNI: {towers.add(new ElniTower(p.x, p.y)); break;}
-					case VIVIENNE: {towers.add(new VivienneTower(p.x, p.y)); break;}
-					case VELASARIAT: {towers.add(new VelasariatTower(p.x, p.y)); break;}
+					case ATTIA: {if (spendMoney(TowerCost.ATTIA.getCost()))
+						towers.add(new AttiaTower(p.x, p.y)); break;}
+					case TANYA: {if (spendMoney(TowerCost.TANYA.getCost()))
+						towers.add(new TanyaTower(p.x, p.y)); break;}
+					case IRIS: {if (spendMoney(TowerCost.IRIS.getCost()))
+						towers.add(new IrisTower(p.x, p.y)); break;}
+					case XINA: {if (spendMoney(TowerCost.XINA.getCost()))
+						towers.add(new XinaTower(p.x, p.y)); break;}
+					case KLAIR: {if (spendMoney(TowerCost.KLAIR.getCost()))
+						towers.add(new KlairTower(p.x, p.y)); break;}
+					case ELNI: {if (spendMoney(TowerCost.ELNI.getCost()))
+						towers.add(new ElniTower(p.x, p.y)); break;}
+					case VIVIENNE: {if (spendMoney(TowerCost.VIVIENNE.getCost()))
+						towers.add(new VivienneTower(p.x, p.y)); break;}
+					case VELASARIAT: {if (spendMoney(TowerCost.VELASARIAT.getCost()))
+						towers.add(new VelasariatTower(p.x, p.y)); break;}
 					default: System.out.println("#TooMuchSwag2Care");
 					}
 					b.repaint();
@@ -143,7 +149,8 @@ public class Avanti extends JFrame{
 	}
 
 	private class MoveTimerListener implements ActionListener {//this all happens at each tick
-
+		int enemySizeA;
+		
 		public void actionPerformed(ActionEvent event){
 
 			ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
@@ -221,14 +228,14 @@ public class Avanti extends JFrame{
 						}
 						Tower target = ((EnemyGunner) e).attack(towerTargetList);
 						if (target != null){
-							Bullet bullet = new Bullet(13,10,target,e.getExactLocation(),Color.RED.darker(),10);
+							Bullet bullet = new Bullet(13,wave,target,e.getExactLocation(),Color.RED.darker(),10);
 							bullets.add(bullet);
 						}
 					}
 				}
 
 			}
-
+			enemySizeA = enemies.size();
 			if (mode == 1){ //they disappear at 'E'
 				while(!enemies.isEmpty()){
 					Enemy e = enemies.remove(0);
@@ -240,7 +247,7 @@ public class Avanti extends JFrame{
 			else if (mode == 2){//they respawn to the beginning at 'E' with their current health
 				while(!enemies.isEmpty()){
 					Enemy e = enemies.remove(0);
-					if (e.getHealth()>0)
+					if (e.getHealth()>0){
 						if (!e.atEndingPoint())
 							enemyList.add(e);
 					//be able to obtain health from current enemy
@@ -248,10 +255,14 @@ public class Avanti extends JFrame{
 							enemyList.add(new EnemyGunner(startingPoint, b, e.getHealth()));
 						else
 							enemyList.add(new Enemy(startingPoint, b, e.getHealth()));
+					}
+					else if (e instanceof EnemyGunner)
+						money += 5*wave*wave;
 				}
 				enemies = enemyList;
 			}
 			}
+			money = money + (enemySizeA - enemies.size())*wave*wave*3/2;
 			b.getEnemiesFromGame(enemies); //for painting stuff
 			b.getTowersFromGame(towers);
 			b.getBulletsFromGame(bullets);
@@ -260,9 +271,14 @@ public class Avanti extends JFrame{
 	}
 
 	private class SpawnTimerListener implements ActionListener {//will be used later
+
 		public void actionPerformed(ActionEvent event){
-			//enemies.add(new Enemy(startingPoint, b, enemyStartingHealth)); 
-			enemies.add(new EnemyGunner(startingPoint, b, enemyStartingHealth)); 
+			wave+=1;
+			money = 5 + money*((wave*wave*1100)/1000);
+			if (new Random().nextInt(15) > 14)
+				enemies.add(new Enemy(startingPoint, b, enemyStartingHealth));
+			else
+				enemies.add(new EnemyGunner(startingPoint, b, enemyStartingHealth)); 
 			enemiesSpawned+=1;
 			if (enemiesSpawned  == 20){
 				enemiesSpawned = 0;
@@ -324,6 +340,19 @@ public class Avanti extends JFrame{
 
 	public TowerType getTowerType() {
 		return tt;
+	}
+
+	public int getMoney() {
+		return money;
+	}
+	
+	public boolean spendMoney(int amt){
+		if (getMoney() >=amt){
+			money -= amt;
+			return true;
+		}
+		return false;
+		
 	}
 
 }

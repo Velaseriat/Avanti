@@ -11,12 +11,19 @@ import Enumeration.Mode;
 
 public class AttiaTower extends Tower{
 	private Enemy enemy;
-	private int abilityUseTime = 160;
+	private int abilityUseTime = 16;
 	private int abilityCounter = 0;
+	
 	
 	public AttiaTower(int x, int y) {
 		super(x, y);
 		coolDown = 100;
+		upgradeCost = 50;
+		purchaseCost = 250;
+		baseHealth = 110;
+		health = 1000;
+		damage = 40;
+		radius = 125;
 	}
 
 	public void attack(ArrayList<Enemy> targetList){

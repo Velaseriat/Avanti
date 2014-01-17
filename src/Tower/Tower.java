@@ -13,9 +13,10 @@ public abstract class Tower implements HuntAndKillable {
 
 
 	//Variables
-	private int radius = 100;
-	protected int health = 10000;
-	protected int damage = 40;
+	protected int radius;
+	protected int health;
+	protected int damage;
+	protected int baseHealth;
 
 	//Counting
 	protected int numEnemiesInRange = 0;
@@ -30,10 +31,14 @@ public abstract class Tower implements HuntAndKillable {
 	protected Mode towerMode = Mode.FARTHEST; //furthest is false
 	protected boolean abilityIsOn = false;
 	protected ArrayList<Enemy> enemies;
+	protected int upgradeCost;
+	protected int purchaseCost;
+	private int level;
 
 	public Tower(int x, int y){
 		location = new Point(x, y);
 		towerMode = Mode.FARTHEST;
+		level = 1;
 	}
 
 	public abstract void attack(ArrayList<Enemy> enemies);
@@ -75,7 +80,7 @@ public abstract class Tower implements HuntAndKillable {
 	}
 
 	public boolean canUseAbility() {
-		if (timeKeeper > coolDown)
+		if (timeKeeper > coolDown && level == 10)
 			return true;
 		return false;
 	}
@@ -87,6 +92,23 @@ public abstract class Tower implements HuntAndKillable {
 
 	public boolean abilityIsOn() {
 		return abilityIsOn;
+	}
+
+	public int getUpgradeCost() {
+		return upgradeCost;
+	}
+
+	public int getLevel(){
+		return level;
+	}
+	
+	public void increaseLevel() {
+		if (level < 10)
+			level+=1;
+		else
+			System.out.println("Max level achieved!");
+		health = health + baseHealth*level;
+		damage = damage + 2*level;
 	}
 
 

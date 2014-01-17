@@ -25,7 +25,7 @@ import Tower.Tower;
 
 
 public class TowerOptionsPanel extends JDialog {
-	private JButton closeButton, removeButton, abilityButton;
+	private JButton closeButton, removeButton, abilityButton, upgradeButton;
 	private JRadioButton bFarthest, bStrongest, bWeakest;
 	private Tower tower;
 	private Avanti avt;
@@ -59,9 +59,12 @@ public class TowerOptionsPanel extends JDialog {
 		removeButton.addActionListener(new RemoveTowerListener());
 		abilityButton = new JButton("Ability");
 		abilityButton.addActionListener(new AbilityListener());
+		upgradeButton = new JButton("Upgrade");
+		upgradeButton.addActionListener(new UpgradeListener());
 		box2.add(removeButton);
         box2.add(closeButton);
         box2.add(abilityButton);
+        box2.add(upgradeButton);
         add(box2, BorderLayout.SOUTH);
 		if (tower.getMode() == Mode.FARTHEST)
 			bFarthest.setSelected(true);
@@ -82,6 +85,24 @@ public class TowerOptionsPanel extends JDialog {
 		setSize(400, 200);
 		setVisible(true);
 		
+	}
+	
+	class UpgradeListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			System.out.println(tower.getUpgradeCost());
+			System.out.println(avt.getMoney());
+			if (tower.getUpgradeCost() < avt.getMoney() && tower.getLevel() < 10){
+				tower.increaseLevel();
+				avt.spendMoney(tower.getUpgradeCost());
+			}
+			else
+				System.out.println("Not enough items");
+			avt.getBoard().repaint();
+					
+		}
+
 	}
 
 	class RemoveTowerListener implements ActionListener{
