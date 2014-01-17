@@ -78,6 +78,8 @@ public class TowerTypeDialog extends JDialog{
         box2.add(cancelButton);
         Box box3 = new Box(BoxLayout.Y_AXIS);
         box3.add(new JLabel("After clicking 'Add Tower' click on the board to place it."));
+        box3.add(new JLabel("If you want to change a tower's strategy, click on the tower itself."));
+        box3.add(new JLabel("CLICK on a tower type, then click add tower (only Attia tower works)."));
         add(box2, BorderLayout.SOUTH);
         add(box3, BorderLayout.NORTH);
 			
@@ -99,12 +101,14 @@ public class TowerTypeDialog extends JDialog{
 		public void actionPerformed(ActionEvent e){
 			setVisible(false);
 			avt.placingTowers = true;
+			avt.towerTypeDialogOpen = false;
 			dispose();
 		}
 	}
 	
 	class CloseWindowListener implements ActionListener{
 		public void actionPerformed(ActionEvent e){
+			avt.towerTypeDialogOpen = false;
 			setVisible(false);
 			dispose();
 		}
@@ -128,6 +132,7 @@ public class TowerTypeDialog extends JDialog{
 				avt.setTowerType(TowerType.VIVIENNE);
 			else if (rVelasariat.isSelected())
 				avt.setTowerType(TowerType.VELASARIAT);
+			
 		}
 		
 		

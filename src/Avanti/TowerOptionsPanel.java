@@ -13,11 +13,19 @@ import javax.swing.JDialog;
 import javax.swing.JRadioButton;
 
 import Enumeration.Mode;
+import Tower.AttiaTower;
+import Tower.ElniTower;
+import Tower.IrisTower;
+import Tower.KlairTower;
+import Tower.TanyaTower;
+import Tower.VelasariatTower;
+import Tower.VivienneTower;
+import Tower.XinaTower;
 import Tower.Tower;
 
 
 public class TowerOptionsPanel extends JDialog {
-	private JButton closeButton, removeButton;
+	private JButton closeButton, removeButton, abilityButton;
 	private JRadioButton bFarthest, bStrongest, bWeakest;
 	private Tower tower;
 	private Avanti avt;
@@ -49,8 +57,11 @@ public class TowerOptionsPanel extends JDialog {
 		closeButton.addActionListener(new CloseWindowListener());
 		removeButton = new JButton("Remove");
 		removeButton.addActionListener(new RemoveTowerListener());
+		abilityButton = new JButton("Ability");
+		abilityButton.addActionListener(new AbilityListener());
 		box2.add(removeButton);
         box2.add(closeButton);
+        box2.add(abilityButton);
         add(box2, BorderLayout.SOUTH);
 		if (tower.getMode() == Mode.FARTHEST)
 			bFarthest.setSelected(true);
@@ -72,7 +83,7 @@ public class TowerOptionsPanel extends JDialog {
 		setVisible(true);
 		
 	}
-	
+
 	class RemoveTowerListener implements ActionListener{
 		public void actionPerformed(ActionEvent e){
 			avt.removeFromTowers(tower);
@@ -102,6 +113,14 @@ public class TowerOptionsPanel extends JDialog {
 			System.out.println("Did I repaint?");
 		}
 		
+	}
+	class AbilityListener implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			System.out.println(tower.canUseAbility());
+			if (tower.canUseAbility()){
+				tower.useAbility();
+			}
+		}
 	}
 }
 

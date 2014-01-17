@@ -37,7 +37,11 @@ public class GameControl extends JPanel{
 
 	class AddTowerListener implements ActionListener{
 		public void actionPerformed(ActionEvent arg0) {
-			new TowerTypeDialog(avanti);
+			if (!avanti.towerTypeDialogOpen){
+				new TowerTypeDialog(avanti);
+				avanti.towerTypeDialogOpen = true;
+				
+			}
 		}
 	}
 	

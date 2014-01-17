@@ -30,4 +30,10 @@ public class VelasariatTower extends Tower {
 		return false;
 	}
 
+	@Override
+	public void useAbility() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

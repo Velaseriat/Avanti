@@ -30,4 +30,10 @@ public class ElniTower extends Tower {
 		return false;
 	}
 
+	@Override
+	public void useAbility() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

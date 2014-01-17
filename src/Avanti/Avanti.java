@@ -34,7 +34,7 @@ public class Avanti extends JFrame{
 	private ArrayList<Tower> towers;
 	private ArrayList<Enemy> enemies;
 	private ArrayList<Bullet> bullets;
-	
+
 	//Variables
 	private int enemiesSpawned = 0;
 	private static Point startingPoint;
@@ -43,23 +43,24 @@ public class Avanti extends JFrame{
 	public boolean towerOptionPanelOpen = false;
 	private int enemyStartingHealth = 300;
 	private TowerType tt = TowerType.ATTIA;
-	
+
 	//Timers
 	private Timer spawnTimer;
 	private Timer waitTimer;
-	
-	
+	public boolean towerTypeDialogOpen = false;
 
-	
-	
-	
+
+
+
+
+
 	public Avanti(){
 		b = new Board("map.csv");
 		add(b);
 		add(new GameControl(this),BorderLayout.SOUTH);
-		
+
 		b.addMouseListener(new BoardClickListener());
-		
+
 		//testing purposes
 		enemies = new ArrayList<Enemy>();
 		startingPoint = b.getStartingPoint();
@@ -74,7 +75,7 @@ public class Avanti extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
 	}
-	
+
 	public static void main(String[] args){
 		Avanti avt = new Avanti();
 		Dimension sd = Toolkit.getDefaultToolkit().getScreenSize(); 
@@ -96,7 +97,7 @@ public class Avanti extends JFrame{
 		public void mousePressed(MouseEvent e) {}
 		public void mouseReleased(MouseEvent e) {}
 	}
-	
+
 	public void boardClick(int x, int y) { // for placing towers later on
 		Point p = new Point(x/50, y/50);
 		if (placingTowers){
@@ -121,7 +122,7 @@ public class Avanti extends JFrame{
 					case ELNI: {towers.add(new ElniTower(p.x, p.y)); break;}
 					case VIVIENNE: {towers.add(new VivienneTower(p.x, p.y)); break;}
 					case VELASARIAT: {towers.add(new VelasariatTower(p.x, p.y)); break;}
-						default: System.out.println("#TooMuchSwag2Care");
+					default: System.out.println("#TooMuchSwag2Care");
 					}
 					b.repaint();
 				}
@@ -144,10 +145,35 @@ public class Avanti extends JFrame{
 	private class MoveTimerListener implements ActionListener {//this all happens at each tick
 
 		public void actionPerformed(ActionEvent event){
+
 			ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
 			ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
 			ArrayList<Tower> towerList = new ArrayList<Tower>();
-			
+			//time keeping for tower abilities
+			for (Tower t : towers){
+				t.addTime();
+			}
+			boolean isFrozen = false;
+			for (Tower t : towers){
+				if (t instanceof AttiaTower){
+					if (t.abilityIsOn()){
+						isFrozen = true;
+					}
+				}
+			}
+			if (isFrozen){
+				if (towers.size() > 0)
+					for (Tower tower : towers){//each tower scans around itself for enemies to attack, and attacks the one that progressed the most
+						ArrayList<Enemy> listOfEnemies = new ArrayList<Enemy>();
+						for (Enemy e : enemies){
+							if (tower.isInRange(e)){
+								listOfEnemies.add(e); //I'm sure the error is around here.
+							}
+						}
+						tower.attack(listOfEnemies);
+					}
+			}
+			else{
 			for (Enemy e : enemies){ //move each enemy
 				e.move();
 			}
@@ -160,7 +186,7 @@ public class Avanti extends JFrame{
 					bulletList.add(b);
 			}
 			bullets = bulletList;
-			
+
 			while(!towers.isEmpty()){
 				Tower t = towers.remove(0);
 				if (t.getHealth()>0){
@@ -171,20 +197,20 @@ public class Avanti extends JFrame{
 				}
 			}
 			towers = towerList;
-			
-			
-			
+
+
+
 			//towers attacking
 			if (towers.size() > 0)
-			for (Tower tower : towers){//each tower scans around itself for enemies to attack, and attacks the one that progressed the most
-				ArrayList<Enemy> listOfEnemies = new ArrayList<Enemy>();
-				for (Enemy e : enemies){
-					if (tower.isInRange(e)){
-						listOfEnemies.add(e); //I'm sure the error is around here.
+				for (Tower tower : towers){//each tower scans around itself for enemies to attack, and attacks the one that progressed the most
+					ArrayList<Enemy> listOfEnemies = new ArrayList<Enemy>();
+					for (Enemy e : enemies){
+						if (tower.isInRange(e)){
+							listOfEnemies.add(e); //I'm sure the error is around here.
+						}
 					}
+					tower.attack(listOfEnemies);
 				}
-				tower.attack(listOfEnemies);
-			}
 			for (Enemy e : enemies){
 				ArrayList<Tower> towerTargetList = new ArrayList<Tower>();
 				if (e instanceof EnemyGunner){
@@ -200,39 +226,39 @@ public class Avanti extends JFrame{
 						}
 					}
 				}
-				
+
 			}
-			
+
 			if (mode == 1){ //they disappear at 'E'
-			while(!enemies.isEmpty()){
-				Enemy e = enemies.remove(0);
-				if (!e.atEndingPoint() && e.getHealth()>0)
-					enemyList.add(e);
-			}
-			enemies = enemyList;
+				while(!enemies.isEmpty()){
+					Enemy e = enemies.remove(0);
+					if (!e.atEndingPoint() && e.getHealth()>0)
+						enemyList.add(e);
+				}
+				enemies = enemyList;
 			}
 			else if (mode == 2){//they respawn to the beginning at 'E' with their current health
 				while(!enemies.isEmpty()){
 					Enemy e = enemies.remove(0);
 					if (e.getHealth()>0)
-					if (!e.atEndingPoint())
-						enemyList.add(e);
+						if (!e.atEndingPoint())
+							enemyList.add(e);
 					//be able to obtain health from current enemy
-					else if (e instanceof EnemyGunner)
-						enemyList.add(new EnemyGunner(startingPoint, b, e.getHealth()));
-					else
-						enemyList.add(new Enemy(startingPoint, b, e.getHealth()));
+						else if (e instanceof EnemyGunner)
+							enemyList.add(new EnemyGunner(startingPoint, b, e.getHealth()));
+						else
+							enemyList.add(new Enemy(startingPoint, b, e.getHealth()));
 				}
 				enemies = enemyList;
 			}
-			
+			}
 			b.getEnemiesFromGame(enemies); //for painting stuff
 			b.getTowersFromGame(towers);
 			b.getBulletsFromGame(bullets);
 			b.repaint();
 		}
 	}
-	
+
 	private class SpawnTimerListener implements ActionListener {//will be used later
 		public void actionPerformed(ActionEvent event){
 			//enemies.add(new Enemy(startingPoint, b, enemyStartingHealth)); 
@@ -244,24 +270,24 @@ public class Avanti extends JFrame{
 				waitTimer = new Timer(5000, new WaitTimerListener());
 				waitTimer.start();
 			}
-			
+
 		}
 	}
-	
+
 	private class WaitTimerListener implements ActionListener{
 		public void actionPerformed(ActionEvent event){
-				waitTimer.stop();
-				increaseEnemyHealth(50);
-				spawnTimer.start();	
+			waitTimer.stop();
+			increaseEnemyHealth(50);
+			spawnTimer.start();	
 		}
 	}
-		
+
 	public void startEnemies() {//should really be named "ticker" but this gives the computer 50 ms to do everything
 		Timer moveTimer = new Timer(50, new MoveTimerListener()); // CHANGE SPEED HERE
 		moveTimer.start();
 		spawnTimer = new Timer(500, new SpawnTimerListener());
 		spawnTimer.start();
-		
+
 	}
 
 	public void increaseEnemyHealth(int i) {
@@ -276,7 +302,7 @@ public class Avanti extends JFrame{
 	}
 
 	public void moveEnemies() {
-		
+
 		for (Enemy e : enemies){
 			e.move();	
 		}
@@ -299,5 +325,5 @@ public class Avanti extends JFrame{
 	public TowerType getTowerType() {
 		return tt;
 	}
-	
+
 }
