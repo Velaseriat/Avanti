@@ -81,7 +81,6 @@ public class AttiaTower extends Tower{
 	}
 
 	public void draw(Graphics g){
-
 		g.setColor(Color.BLACK);
 		g.fillRect(50 * location.x, 50 * location.y, 50, 50);
 		g.setColor(Color.CYAN.brighter());
@@ -90,6 +89,7 @@ public class AttiaTower extends Tower{
 		g.drawOval( 50 * location.x, 50 * location.y, 50,50);
 		g.setColor(Color.GREEN);
 		g.drawString(new Integer(health).toString(), 50 * location.x , 50 * location.y );
+		g.drawString(new Integer(level).toString(), 50*location.x, 50*location.y + 50);
 		if (drawShot && enemy != null && numEnemiesInRange > 0){
 			g.setColor(Color.CYAN.brighter());
 			if (!abilityIsOn){

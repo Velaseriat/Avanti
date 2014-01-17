@@ -33,7 +33,7 @@ public abstract class Tower implements HuntAndKillable {
 	protected ArrayList<Enemy> enemies;
 	protected int upgradeCost;
 	protected int purchaseCost;
-	private int level;
+	protected int level;
 
 	public Tower(int x, int y){
 		location = new Point(x, y);
